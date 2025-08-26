@@ -35,8 +35,7 @@ conc_long <- clean_conc %>%
   mutate(days_before = no_day - 22,
          days_after = no_day +22)
 
-if days_before >= 
-  & days_after <=
+
 
 
 conc_av <- conc_long %>% 
