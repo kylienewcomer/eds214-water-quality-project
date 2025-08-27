@@ -1,0 +1,115 @@
+---
+title: "nutrient-concentrations"
+format: html
+warning: FALSE
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+library(forecast)
+library(zoo)
+library(lubridate)
+library(slider)
+```
+
+
+```{r}
+# Reading in data
+
+bq1 <- read_csv(here("data", "knb-lter-luq.20.4923064", "QuebradaCuenca1-Bisley.csv"))
+
+bq2 <- read_csv(here("data", "knb-lter-luq.20.4923064", "QuebradaCuenca2-Bisley.csv"))
+
+bq3 <- read_csv(here("data", "knb-lter-luq.20.4923064", "QuebradaCuenca2-Bisley.csv"))
+
+prm <- read_csv(here("data", "knb-lter-luq.20.4923064", "RioMameyesPuenteRoto.csv"))
+```
+
+```{r}
+# Combining data
+bq_12 <- rbind(bq1, bq2)
+
+bq <- rbind(bq_12, bq3)
+
+all <- rbind(bq, prm)
+```
+
+```{r}
+#cleaning for all
+
+clean_bq1 <- bq1 %>% 
+  
+  clean_names() %>% 
+  
+  select(sample_id, sample_date, no3_n, nh4_n, mg, ca, k) %>% 
+  filter(year <= 1995)
+  
+clean_bq1 <- bq1 %>% 
+  
+  clean_names() %>% 
+  
+  select(sample_id, sample_date, no3_n, nh4_n, mg, ca, k) %>% 
+  filter(year <= 1995)
+
+clean_bq1 <- bq1 %>% 
+  
+  clean_names() %>% 
+  
+  select(sample_id, sample_date, no3_n, nh4_n, mg, ca, k) %>% 
+  filter(year <= 1995)
+
+clean_bq1 <- bq1 %>% 
+  
+  clean_names() %>% 
+  
+  select(sample_id, sample_date, no3_n, nh4_n, mg, ca, k) %>% 
+  filter(year <= 1995)
+  #mutate(day_of_year = lubridate::yday(sample_date)) %>% 
+
+  
+  #separate(col = sample_date, 
+           #into = c("year", "month", "day"), sep = "-", remove = FALSE) %>% 
+  
+  
+  
+  
+  
+  #want to add a column of day relative to every day in 
+  mutate(no_day = (as.numeric(year)-1986)*365 + day_of_year)
+
+
+conc_long <- clean_conc %>% 
+  #changing data format to better use in ggplot later
+    pivot_longer("no3_n":"k", names_to = "nutrient",
+                 values_to = "concentration")
+```
+
+```{r}
+#writing my function
+moving_average <- function(focal_date, dates, conc, win_size_wks) {
+  # Which dates are in the window?
+  is_in_window <- (dates > focal_date - (win_size_wks / 2) * 7) &
+    (dates < focal_date + (win_size_wks / 2) * 7)
+  # Find the associated concentrations
+  window_conc <- conc[is_in_window]
+  # Calculate the mean
+  result <- mean(window_conc, na.rm = TRUE)
+  
+  return(result)
+}
+```
+
+```{r}
+conc_mean <- conc_long %>% 
+  group_by(sample_id, nutrient) %>%  
+  mutate(calc_rolling = sapply(sample_date,
+                               moving_average(dates = sample_date,
+                                              conc = concentration,
+                                              win_size_wks = 9)
+)) %>% 
+  ungroup()
+
+```
+

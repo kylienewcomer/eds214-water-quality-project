@@ -49,21 +49,9 @@ clean_conc <- all %>%
 
 
 conc_long <- clean_conc %>% 
-  
   #changing data format to better use in ggplot later
     pivot_longer("no3_n":"k", names_to = "nutrient",
                  values_to = "concentration") %>% 
-<<<<<<< HEAD
-  
-  #adding rows to classify for 9 week rolling mean
-  mutate(days_before = no_day - 31,
-         days_after = no_day +31)
-=======
-  mutate(days_before = no_day - 22,
-         days_after = no_day +22)
-
-
->>>>>>> cfccf177c71a57d91d3b2c5e421620f29931f912
 
 
 #practicing means
@@ -109,7 +97,8 @@ range <- day(1)
  # ungroup
          
 conc_subset <- conc_long %>% 
-  slice_head(n = 40)
+  slice_head(n = 10)
+
 
 
 conc <- conc_subset %>%
@@ -147,4 +136,26 @@ ggplot(conc_mean, aes(sample_date, roll_mean)) +
   facet_wrap(~nutrient, scales = "free")
   
 #week_class(day = 308)
+moving_average <- function(focal_date, dates, conc, win_size_wks) {
+  # Which dates are in the window?
+  is_in_window <- (dates > focal_date - (win_size_wks / 2) * 7) &
+    (dates < focal_date + (win_size_wks / 2) * 7)
+  # Find the associated concentrations
+  window_conc <- conc[is_in_window]
+  # Calculate the mean
+  result <- mean(window_conc, na.rm = TRUE)
+  
+  return(result)
+}
+
+
+
+conc_long %>% 
+  group_by(sample_id, nutrient)
+mutate(calc_rolling <- sapply(sample_date, moving_average,
+  dates = sample_date,
+  conc = concentration,
+  win_size_wks = 9
+)
+)
 
