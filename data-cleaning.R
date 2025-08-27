@@ -53,10 +53,17 @@ conc_long <- clean_conc %>%
   #changing data format to better use in ggplot later
     pivot_longer("no3_n":"k", names_to = "nutrient",
                  values_to = "concentration") %>% 
+<<<<<<< HEAD
   
   #adding rows to classify for 9 week rolling mean
   mutate(days_before = no_day - 31,
          days_after = no_day +31)
+=======
+  mutate(days_before = no_day - 22,
+         days_after = no_day +22)
+
+
+>>>>>>> cfccf177c71a57d91d3b2c5e421620f29931f912
 
 
 #practicing means
