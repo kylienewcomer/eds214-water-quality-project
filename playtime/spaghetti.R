@@ -1,3 +1,9 @@
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                                                            --
+##--------------------------------- SPAGHETTI-----------------------------------
+##                                                                            --
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 rm(list = ls())
 
 # Loading in packages
@@ -158,4 +164,13 @@ mutate(calc_rolling <- sapply(sample_date, moving_average,
   win_size_wks = 9
 )
 )
+
+
+conc_mean <- conc_final %>%
+  arrange(sample_date) %>% # need to sort in chronological order 
+  group_by(sample_id, nutrient) %>% # create means for each nutrient at each site
+  mutate(roll_mean = slide_index_dbl(concentration, sample_date, # use rolling mean function
+                                     .f = mean, na_rm = TRUE,
+                                     .before = 31, .after = 31, 
+                                     complete = FALSE))
 
