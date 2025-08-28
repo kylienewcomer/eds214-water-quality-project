@@ -17,6 +17,8 @@ library(lubridate)
 library(slider)
 library(ARTofR)
 library(paletteer)
+library(viridis)
+
 ```
 
 ```{r}
@@ -36,10 +38,13 @@ conc_mean <- rolling_mean(conc_final)
 ```
 
 #### Creating my figure
-```{r, fig.cap= "This figure shows the nutrient levels for rivers in Brisley, Puerto Rico"}
+```{r, fig.cap= "This figure shows the nutrient levels for rivers in Brisley, Puerto Rico with 1989 Hurricane Hugo denoted by the dotted line. Graphs are broken up by the "}
+#creating hurricane date variable
+hurricane <- as.Date("1989-09-18")
+
 ggplot(conc_mean, aes(sample_date, roll_mean)) +
   geom_line(aes(color = sample_id)) +
-  #scale_color_manual(labels = c())
+  geom_vline(xintercept = hurricane, linetype = "dotted") + #adding huricane to graph
   scale_color_paletteer_d("nationalparkcolors::Arches") +
   facet_wrap(~nutrient, ncol = 1, scales = "free_y", strip.position = "left",
              labeller = as_labeller(
@@ -48,10 +53,10 @@ ggplot(conc_mean, aes(sample_date, roll_mean)) +
                  mg = "Mg (mg l^-1)", 
                  no3_n = "NO3-N (ug l^-1)", 
                  nh4_n = "NH4-N (ug l^-1)"))) +
-  labs(x = "Sample Date",
+  labs(x = "Years",
        y = "",
-       color = "Site",
-       ) +
+       color = "Site") +
   theme_minimal() +
-  theme(strip.background = element_blank(), strip.placement = "outside", strip.text.y = element_text(size = 5), legend.position = "top", axis.text.y = element_text(size = 5))
+  theme(strip.background = element_blank(), strip.placement = "outside", strip.text.y = element_text(size = 7.5), axis.text.y = element_text(size = 6))
+  
 ```

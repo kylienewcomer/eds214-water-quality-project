@@ -39,7 +39,12 @@ all <- rbind(bq, prm)
 
 # cleaning for all
 clean_conc <- all %>% 
-  clean_names() %>% 
+  clean_names()  %>% 
+  #separating into year for filtering
+  separate(col = sample_date, 
+           into = c("year", "month", "day"), sep = "-", remove = FALSE) %>% 
+  
+  filter(year <= 1994 & year >= 1986) %>%
   
   # selecting only the columns I want
   select(sample_id, 
