@@ -90,7 +90,7 @@ conc_mean <- conc_long %>%
 ```{r}
 ggplot(conc_mean, aes(sample_date, roll_mean)) +
   geom_line(aes(color = sample_id)) +
-  scale_color_manual(labels = c())
+  #scale_color_manual(labels = c())
   scale_color_paletteer_d("nationalparkcolors::Arches") +
   facet_wrap(~nutrient, ncol = 1, scales = "free", 
              labeller = labeller()) +
