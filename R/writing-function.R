@@ -10,7 +10,7 @@ library(slider)
 moving_average <- function(df, focal_date, dates, conc, win_size_wks) {
   # Which dates are in the window?
   for(i in nrow(df)){
-    focal_date <- df[i, 'sample_date']
+    focal_date <- df[i, 2]
   is_in_window <- (dates > focal_date - (win_size_wks / 2) * 7) &
     (dates < focal_date + (win_size_wks / 2) * 7)
   # Find the associated concentrations
@@ -41,14 +41,15 @@ conc_subset <- data.frame(
                "k","no3_n","nh4_n","mg","ca","k"),
   concentration = c(118, NA, 3.04, 4.26, 0.81, 109, NA, 3.13, 3.17, 0.82)
 )
-moving_average(dates = conc_subset$sample_date, conc = conc_subset$concentration, win_size_wks = 9)
+
+
+
 
 conc_subset$sample_date <- as.Date(conc_subset$sample_date)
 
 conc_mean <- conc_subset %>% 
-  #group_by(sample_id, nutrient) %>%  
-  mutate(calc_rolling = sapply(sample_date,
-                               moving_average(df = conc_subset,
+  mutate(calc_rolling = sapply(x = sample_date,
+                              FUN = moving_average(df = conc_subset,
                                               dates = as.Date(sample_date),
                                               conc = concentration,
                                               win_size_wks = 9)
