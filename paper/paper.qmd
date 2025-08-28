@@ -1,17 +1,12 @@
 ---
-title: "nutrient-concentrations"
+title: "Nutrient Concentrations"
 format: html
 warning: FALSE
 ---
 
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-##                                                                            --
-##------------- NUTRIENT CONCENTRATIONS IN RIVERS OF PUERTO RICO----------------
-##                                                                            --
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #### Loading Packages and Data
-```{r}
+```{r, echo = FALSE}
 rm(list=ls())
 library(tidyverse)
 library(here)
@@ -25,77 +20,38 @@ library(paletteer)
 ```
 
 ```{r}
-# Reading in data
-bq1 <- read_csv(here("data", "knb-lter-luq.20.4923064", "QuebradaCuenca1-Bisley.csv"))
-
-bq2 <- read_csv(here("data", "knb-lter-luq.20.4923064", "QuebradaCuenca2-Bisley.csv"))
-
-bq3 <- read_csv(here("data", "knb-lter-luq.20.4923064", "QuebradaCuenca3-Bisley.csv"))
-
-prm <- read_csv(here("data", "knb-lter-luq.20.4923064", "RioMameyesPuenteRoto.csv"))
+# Reading in cleaned data
+conc_final <- readRDS(here("outputs", "conc_final.RDS"))
 ```
 
-#### Data Wrangling
+
+#### Sourcing my function
 ```{r}
-# Combining data
-bq_12 <- rbind(bq1, bq2)
-
-bq <- rbind(bq_12, bq3)
-
-all <- rbind(bq, prm)
+source(here("R", "rolling-mean-function.R"))
 ```
 
+Creating the moving average
 ```{r}
-# cleaning for all
-clean_conc <- all %>% 
-  
-  clean_names() %>% 
-  
-  # selecting only the columns I want
-  
-  select(sample_id, sample_date, no3_n, nh4_n, mg, ca, k) %>% 
-  
-  # turning 
-  
-  #mutate(day_of_year = lubridate::yday(sample_date)) %>% 
-
-  #breaking down date by year, month, day
-  
-  separate(col = sample_date, 
-           into = c("year", "month", "day"), sep = "-", remove = FALSE) 
-  
-```
-
-```{r}
-# Pivoting df
-conc_long <- clean_conc %>% 
-  #changing data format to create a column for nutrients to use facet wrap in ggplot later
-    pivot_longer("no3_n":"k", names_to = "nutrient",
-                 values_to = "concentration")
-```
-
-#### Creating the moving average
-```{r}
-
-conc_mean <- conc_long %>%
-  arrange(sample_date) %>% # need to sort in chronological order 
-  group_by(sample_id, nutrient) %>% # create means for each nutrient at each site
-  mutate(roll_mean = slide_index_dbl(concentration, sample_date, # use rolling mean function
-                                     .f = mean, na_rm = TRUE,
-                                     .before = 31, .after = 31, 
-                                     complete = FALSE))
+conc_mean <- rolling_mean(conc_final)
 ```
 
 #### Creating my figure
-```{r}
+```{r, fig.cap= "This figure shows the nutrient levels for rivers in Brisley, Puerto Rico"}
 ggplot(conc_mean, aes(sample_date, roll_mean)) +
   geom_line(aes(color = sample_id)) +
   #scale_color_manual(labels = c())
   scale_color_paletteer_d("nationalparkcolors::Arches") +
-  facet_wrap(~nutrient, ncol = 1, scales = "free", 
-             labeller = labeller()) +
+  facet_wrap(~nutrient, ncol = 1, scales = "free_y", strip.position = "left",
+             labeller = as_labeller(
+               c(ca = "Ca (mg l^-1)", 
+                 k = "K (mg l^-1)", 
+                 mg = "Mg (mg l^-1)", 
+                 no3_n = "NO3-N (ug l^-1)", 
+                 nh4_n = "NH4-N (ug l^-1)"))) +
   labs(x = "Sample Date",
-       y = "Concentration",
-       color = "Site") +
-  theme_classic()
+       y = "",
+       color = "Site",
+       ) +
+  theme_minimal() +
+  theme(strip.background = element_blank(), strip.placement = "outside", strip.text.y = element_text(size = 5), legend.position = "top", axis.text.y = element_text(size = 5))
 ```
