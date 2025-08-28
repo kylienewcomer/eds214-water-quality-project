@@ -1,0 +1,64 @@
+---
+title: "Peer Review"
+output: html_document
+date: "2025-08-28"
+---
+# Automate
+### Running the entire analysis requires rendering one Quarto document
+Meets Specs
+
+### The analysis runs without errors
+Meets Specs
+
+### The analysis produces the expected output
+Meets Specs
+
+### Data import/cleaning is handled in its own script(s)
+Not Yert
+# Organize 
+
+### Raw data is contained in its own folder
+Yes
+
+### Intermediate outputs are created and saved to a separate folder from raw data
+Not Yet
+
+### At least one piece of functionality has been refactored into a function in its own file
+Meets specs
+
+# Document 
+
+###The repo has a README that explains where to find (1) data, (2) analysis script, (3) supporting code, and (4) outputs
+Not yet
+
+### The README includes a flowchart and text explaining how the analysis works
+Not yet
+
+### The code is appropriately commented
+Not Yet
+
+### Variable and function names are descriptive and follow a consistent naming convention
+Meets Specs
+
+# Scale
+### Running the environment initialization script installs all required packages
+Not Yet
+
+### The analysis script runs without errors
+Meets Specs
+
+# Collaborate
+
+### The student has provided attentive, constructive feedback in a peer review
+
+### The student has contributed to a peer’s repo by opening an issue and creating a pull request
+
+### The repo has at least three closed GitHub issues
+
+### The commit history includes at least one merged branch and a resolved merge conflict
+
+### The rendered analysis is accessible via GitHub Pages
+
+
+```         
+```
