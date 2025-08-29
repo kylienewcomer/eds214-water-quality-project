@@ -52,22 +52,34 @@ The produced figure shows increases in concentrations of nutrients with availabl
 #Creating hurricane date variable for vline
 hurricane <- as.Date("1989-09-18")
 
-conc_mean_fig <- ggplot(conc_mean, aes(sample_date, roll_mean)) +
+conc_mean_fig <- ggplot(conc_mean, 
+                        aes(sample_date, roll_mean)) +
   geom_line(aes(color = sample_id)) +
-  geom_vline(xintercept = hurricane, linetype = "dotted") + #adding huricane to graph
+  geom_vline(xintercept = hurricane, 
+             linetype = "dotted") + #adding huricane to graph
   scale_color_paletteer_d("nationalparkcolors::Arches") +
-  facet_wrap(~nutrient, ncol = 1, scales = "free_y", strip.position = "left",
-             labeller = as_labeller(
+  #wrapping by nutrients
+  facet_wrap(~nutrient, 
+             ncol = 1, 
+             scales = "free_y", # allow nutrients to be scaled seperately
+             strip.position = "left",
+             labeller = as_labeller( # updating labels
                c(ca = "Ca (mg l^-1)", 
                  k = "K (mg l^-1)", 
                  mg = "Mg (mg l^-1)", 
                  no3_n = "NO3-N (ug l^-1)", 
                  nh4_n = "NH4-N (ug l^-1)"))) +
+  # axis ang legend labels
   labs(x = "Years",
        y = "",
        color = "Site") +
+  
   theme_minimal() +
-  theme(strip.background = element_blank(), strip.placement = "outside", strip.text.y = element_text(size = 7.5), axis.text.y = element_text(size = 6))
+  # adjusting text placement and size
+  theme(strip.background = element_blank(), 
+        strip.placement = "outside", 
+        strip.text.y = element_text(size = 7.5), 
+        axis.text.y = element_text(size = 6))
 
 conc_mean_fig
   

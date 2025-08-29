@@ -32,10 +32,13 @@ all <- rbind(bq, prm)
 
 # cleaning for all
 clean_conc <- all %>% 
+  #clean names rule
   clean_names()  %>% 
   #creating year to filter
   separate(col = sample_date, 
-           into = c("year", "month", "day"), sep = "-", remove = FALSE) %>% 
+           into = c("year", "month", "day"), 
+           sep = "-", 
+           remove = FALSE) %>% 
   #selecting only years used in original figure
   filter(year <= 1994 & year >= 1986) %>%
   
@@ -48,11 +51,14 @@ clean_conc <- all %>%
          ca, 
          k)
 
+
 #making the data long
 conc_long <- clean_conc %>% 
   #creating a nutrient column to better use facet in ggplot later
-  pivot_longer("no3_n":"k", names_to = "nutrient",
+  pivot_longer("no3_n":"k", 
+               names_to = "nutrient",
                values_to = "concentration")
+
 
 # saving data to call in other scripts and quarto docs
 saveRDS(conc_long, file = here::here("outputs", "conc_final.RDS"))
