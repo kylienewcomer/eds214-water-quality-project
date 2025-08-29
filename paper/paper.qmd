@@ -17,7 +17,7 @@ library(lubridate)
 library(slider)
 library(ARTofR)
 library(paletteer)
-library(viridis)
+library(hrbrthemes)
 
 ```
 
@@ -32,13 +32,13 @@ conc_final <- readRDS(here("outputs", "conc_final.RDS"))
 source(here("R", "rolling-mean-function.R"))
 ```
 
-Creating the moving average
+#### Applying function to data
 ```{r}
 conc_mean <- rolling_mean(conc_final)
 ```
 
 #### Creating my figure
-```{r, fig.cap= "This figure shows the nutrient levels for rivers in Brisley, Puerto Rico with 1989 Hurricane Hugo denoted by the dotted line. Graphs are broken up by the "}
+```{r, fig.cap= "This figure shows the nutrient levels for rivers in Brisley, Puerto Rico with 1989 Hurricane Hugo denoted by the dotted line. Plots are broken up by the nutrients measured from top to bottom: Calcium, Potassium, Magnesium, Ammonium-N, and Nitrate-N"}
 #creating hurricane date variable
 hurricane <- as.Date("1989-09-18")
 
@@ -56,6 +56,7 @@ ggplot(conc_mean, aes(sample_date, roll_mean)) +
   labs(x = "Years",
        y = "",
        color = "Site") +
+  #scale_x_continuous(breaks= c(1986, 1990, 1994), limits = c(1985,1994)) +
   theme_minimal() +
   theme(strip.background = element_blank(), strip.placement = "outside", strip.text.y = element_text(size = 7.5), axis.text.y = element_text(size = 6))
   

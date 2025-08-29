@@ -1,13 +1,21 @@
-library(tidyverse)
-library(here)
-library(janitor)
-library(forecast)
-library(zoo)
-library(lubridate)
-library(slider)
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##                                                                            --
+##---------------- THIS SCRIPT CREATES MY 9 WEEK ROLLING MEAN-------------------
+##                                                                            --
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-
+#' Nine Week Rolling Mean 
+#'
+#' @param df The data frame used in the function
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+#' rolling_mean(df)
+#'
+#' 
 rolling_mean <- function(df){
   df %>%
   arrange(sample_date) %>% # need to sort in chronological order 
