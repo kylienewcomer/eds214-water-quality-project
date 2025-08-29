@@ -3,7 +3,7 @@ title: "Nutrient Concentrations"
 author: Kylie Newcomer
 format:
   html: 
-    output-file: "paper.html"
+    output-file: "index.html"
 warning: FALSE
 
 ---
