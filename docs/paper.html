@@ -105,10 +105,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="background" class="level1">
 <h1>Background</h1>
-<p>This project reproduces Figure 3 from Schaefer et al 2000. The data for this project shows nutrient concentrations from streams of Bisley, Puerto Rico during 1986-1994, and analyzes the impacts of Hurricane Hugo on the concentrations.</p>
+<p>This goal of this project was to reproduce Figure 3 from “Effects of hurricane disturbance on stream water concentrations and fluxes in eight tropical forest watersheds of the Luquillo Experimental Forest, Puerto Rico. Journal of Tropical Ecology” by Schaefer et al 2000. This study analyzes the nutrient concentrations from streams of Bisley, Puerto Rico during 1986-1994, and analyzes the impacts of Hurricane Hugo on the concentrations.</p>
 </section>
 <section id="data" class="level1">
 <h1>Data</h1>
+<p>The data used was taken from four sites in Bisley, Puerto Rico and measured the concentrations of Calcium, Potassium, Magnesium, Ammonium-N, and Nitrate-N throughout time. Raw data was combined to create one data set with all target sites.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading in cleaned data</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>conc_final <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"conc_final.RDS"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -116,6 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="methods" class="level1">
 <h1>Methods</h1>
+<p>Data was filtered and selected to only include information necessary to run the analysis and apply a 9-week rolling average to the concentrations. The main steps after data wrangling and cleaning were to arrange samples by date, group them by site and nutrient type to run averages within individual sites and nutrients. The slide_index_dbl function was used to calculate the rolling mean over a 9-week period.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calling in my function</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"rolling-mean-function.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -127,6 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
+<p>The produced figure shows increases in concentrations of nutrients with available data across all sites following Hurricane Hugo in 1989. While most nutrient concentrations remained high in the years following the hurricane, Nitrate-N started to show a decrease after 1990.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Creating hurricane date variable for vline</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>hurricane <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">"1989-09-18"</span>)</span>
