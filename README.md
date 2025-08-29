@@ -6,7 +6,7 @@ Author: Kylie Newcomer
 
 Data is from “Effects of Hurricane Disturbance on Stream Water Concentrations and Fluxes in Eight Tropical Forest Watersheds of the Luquillo Experimental Forest, Puerto Rico.” and can be accessed at this link: https://doi.org/10.6073/pasta/f31349bebdc304f758718f4798d25458. This study examines the impacts of Hurricane Hugo on nutrient concentrations in streams throughout Puerto Rico. The raw data can also be found in the "**data**" folder. 
 
-Data was subset to fit the parameters for Figure 1 of Schaefer et al 2000. 
+Data was subset to fit the parameters for Figure 3 of Schaefer et al 2000. 
 
 ## Analysis
 

@@ -1,14 +1,16 @@
 ---
 title: "Nutrient Concentrations"
+author: Kylie Newcomer
 format:
   html: 
-    output-file: "index.html"
+    output-file: "paper.html"
 warning: FALSE
 
 ---
+# Background
+This project reproduces Figure 3 from Schaefer et al 2000. The data for this project shows nutrient concentrations from streams of Bisley, Puerto Rico during 1986-1994, and analyzes the impacts of Hurricane Hugo on the concentrations.
 
 
-#### Loading Packages and Data
 ```{r, echo = FALSE}
 rm(list=ls())
 library(tidyverse)
@@ -23,25 +25,28 @@ library(paletteer)
 
 ```
 
+# Data
 ```{r}
 # Reading in cleaned data
 conc_final <- readRDS(here("outputs", "conc_final.RDS"))
 ```
 
 
-#### Sourcing my function
+# Methods
 ```{r}
+# Calling in my function
 source(here("R", "rolling-mean-function.R"))
 ```
 
-#### Applying function to data
+
 ```{r}
+# Applying function to data
 conc_mean <- rolling_mean(conc_final)
 ```
 
-#### Creating my figure
+# Results
 ```{r, fig.cap= "This figure shows the nutrient levels for rivers in Brisley, Puerto Rico with 1989 Hurricane Hugo denoted by the dotted line. Plots are broken up by the nutrients measured from top to bottom: Calcium, Potassium, Magnesium, Ammonium-N, and Nitrate-N"}
-#creating hurricane date variable
+#Creating hurricane date variable for vline
 hurricane <- as.Date("1989-09-18")
 
 conc_mean_fig <- ggplot(conc_mean, aes(sample_date, roll_mean)) +
@@ -58,13 +63,13 @@ conc_mean_fig <- ggplot(conc_mean, aes(sample_date, roll_mean)) +
   labs(x = "Years",
        y = "",
        color = "Site") +
-  #scale_x_continuous(breaks= c(1986, 1990, 1994), limits = c(1985,1994)) +
   theme_minimal() +
   theme(strip.background = element_blank(), strip.placement = "outside", strip.text.y = element_text(size = 7.5), axis.text.y = element_text(size = 6))
 
 conc_mean_fig
   
 ```
+
 ```{r}
 ggsave(here("figs", "conc_mean_fig.png"), height = 5, width = 7)
 ```
