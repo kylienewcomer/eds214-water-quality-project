@@ -16,6 +16,8 @@ I started this project by bringing in the data sets and combining them with the 
 
 After cleaning the data, I created a function that arranged and grouped the data set and applied a slide_index function to find the 9-week rolling mean to the entire data set in one step. The rolling mean function was written in "rolling-mean-function.R", which can be found in the "**R**" folder.
 
+The final figure can be found in the "**figs**" folder. 
+
 ## References
 
 McDowell, W. and International Institute of Tropical Forestry(IITF), USDA Forest Service.. 2024. Chemistry of stream water from the Luquillo Mountains ver 4923064. Environmental Data Initiative. <https://doi.org/10.6073/pasta/f31349bebdc304f758718f4798d25458>

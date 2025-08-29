@@ -1,7 +1,10 @@
 ---
 title: "Nutrient Concentrations"
-format: html
+format:
+  html: 
+    output-file: "index.html"
 warning: FALSE
+
 ---
 
 
@@ -17,7 +20,6 @@ library(lubridate)
 library(slider)
 library(ARTofR)
 library(paletteer)
-library(hrbrthemes)
 
 ```
 
@@ -42,7 +44,7 @@ conc_mean <- rolling_mean(conc_final)
 #creating hurricane date variable
 hurricane <- as.Date("1989-09-18")
 
-ggplot(conc_mean, aes(sample_date, roll_mean)) +
+conc_mean_fig <- ggplot(conc_mean, aes(sample_date, roll_mean)) +
   geom_line(aes(color = sample_id)) +
   geom_vline(xintercept = hurricane, linetype = "dotted") + #adding huricane to graph
   scale_color_paletteer_d("nationalparkcolors::Arches") +
@@ -59,5 +61,11 @@ ggplot(conc_mean, aes(sample_date, roll_mean)) +
   #scale_x_continuous(breaks= c(1986, 1990, 1994), limits = c(1985,1994)) +
   theme_minimal() +
   theme(strip.background = element_blank(), strip.placement = "outside", strip.text.y = element_text(size = 7.5), axis.text.y = element_text(size = 6))
+
+conc_mean_fig
   
 ```
+```{r}
+ggsave(here("figs", "conc_mean_fig.png"), height = 5, width = 7)
+```
+
